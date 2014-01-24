@@ -1,0 +1,38 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+           xmlns:browser="http://namespaces.zope.org/browser"
+           xmlns:plone="http://namespaces.plone.org/plone">
+
+    <include package="zope.annotation" />
+
+    <include package="plone.contentrules" />
+    <include package="plone.contentrules" file="meta.zcml" />
+
+    <adapter factory=".mailfromcreator.MailFromCreatorExecutor"/>
+
+    <browser:page
+        for="plone.app.contentrules.browser.interfaces.IRuleActionAdding"
+        name="ilo.contentrules.mailfromcreator"
+        class=".mailfromcreator.MailAddForm"
+        permission="cmf.ManagePortal"
+        />
+
+    <browser:page
+        for=".mailfromcreator.IMailFromCreator"
+        name="edit"
+        class=".mailfromcreator.MailEditForm"
+        permission="cmf.ManagePortal"
+        />
+
+    <plone:ruleAction
+        name="ilo.contentrules.mailfromcreator"
+        title="Send email from content creator"
+        description="Send an email on the triggering object"
+        for="*"
+        event="zope.component.interfaces.IObjectEvent"
+        addview="ilo.contentrules.mailfromcreator"
+        editview="edit"
+        schema=".mailfromcreator.IMailFromCreator"
+        factory=".mailfromcreator.IMailFromCreator"
+        />
+
+</configure>
